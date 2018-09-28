@@ -7,7 +7,7 @@ const path = require('path');   // 引入处理路径的模块
 const fs = require('fs'); // 引入文件模块
 const app = express();
 
-app.set('port',process.env.PORT || 80);
+app.set('port',process.env.PORT || 3001);
 app.use(api);  						// express use router       
 
 // 引入处理post数据的模块
