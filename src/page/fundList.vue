@@ -187,7 +187,7 @@
                 }
             };
             return {
-                host:'http://127.0.0.1:3000',
+                host:'http://hk2.linkersocks.com:3000',
                 admin: {"phone":"15093663999"},
                 sortnum:0,
                 tableData: [],

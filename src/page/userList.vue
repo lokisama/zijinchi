@@ -114,6 +114,7 @@
     export default {
         data(){
             return {
+                host:'http://hk2.linkersocks.com:3000',
                 sortnum:0,
                 tableData: [],
               //需要给分页组件传的信息
@@ -185,7 +186,7 @@
                 // })
                 axios({
                   type:'post',
-                  path:'http://127.0.0.1:3000/api/v2/getUserList',
+                  path: this.host + '/api/v2/getUserList',
                   data:{"phone":"13788997536"},
                   fn:data=>{
                     console.log(data);

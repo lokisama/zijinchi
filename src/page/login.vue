@@ -38,6 +38,7 @@
 	export default {
 	    data(){
 			return {
+                apiHost:'http://hk2.linkersocks.com:3001',
 				loginForm: {
 					username: '',
 					password: ''
@@ -182,7 +183,7 @@
 						let userData = Object.assign(userinfo, data);
                         axios({
                             type:'get',
-                            path:'/api/user/login',
+                            path: this.apiHost +'/api/user/login',
                             data:userData,
                             fn:data=>{
 								console.log(data);
