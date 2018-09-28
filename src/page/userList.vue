@@ -7,7 +7,7 @@
                  highlight-current-row
                  style="width:100%">
                 <el-table-column
-                   prop="sortnum"
+                   prop="id"
                    label="#"
                    width="60"
                    align='center'>
@@ -19,8 +19,8 @@
                    align='center'>
                 </el-table-column>
                 <el-table-column
-                   property="address"
-                   label="注册地址"
+                   property="money"
+                   label="投资金额"
                    width="160"
                    align='center'>
                 </el-table-column>
@@ -31,15 +31,21 @@
                    align='center'>
                 </el-table-column> -->
                   <el-table-column
-                   property="isp"
-                   label="网络"
-                   width="80"
+                   property="phone"
+                   label="手机"
+                   width="180"
                    align='center'>
                 </el-table-column> 
                  <el-table-column
-                   property="ip"
-                   label="IP地址"
-                   width="180"
+                   property="inviteKey"
+                   label="邀请码"
+                   width="80"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="invite"
+                   label="邀请人"
+                   width="80"
                    align='center'>
                 </el-table-column>
                 <el-table-column
@@ -55,14 +61,27 @@
                    align='center'>
                 </el-table-column>
                  <el-table-column
-                   property="region_id"
-                   label="地区编号"
-                   width="120"
+                   property="bankName"
+                   label="开户行"
+                   width="80"
                    align='center'>
                 </el-table-column> 
                  <el-table-column
-                   property="city_id"
-                   label="城市编号"
+                   property="bankCard"
+                   label="卡号"
+                   width="220"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="mainReceiver"
+                   label="收货人"
+                   width="80"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="mainAddress"
+                   label="收货地址"
+                   width="240"
                    align='center'>
                 </el-table-column>
             </el-table>
@@ -136,34 +155,74 @@
 				   data = Object.assign(data, where || {});
                 } 
                 // 封装  get,path,params,fn,errfn
+                // axios({
+                //     type:'get',
+                //     path:'/api/user/getUserInfo',
+                //     data:data,
+                //     fn:data=>{
+                //         console.log(data);
+                //         //成功之后的回调函数
+                //         this.paginations.total = data.count;
+                //         this.tableData = [];
+                //     	data.data.forEach( (item,index) => {
+                //     	  	const tableItem = {
+                //                 id:  item._id,
+                //                 sortnum:this.sortnum+(index+1),
+                //                 username:item.username,
+                //                 address:item.address,
+                //                 createTime: mutils.parseToDate(JSON.stringify(item.createTime)),
+                //                 updateTime: mutils.parseToDate(JSON.stringify(item.updateTime)),
+                //                 ip:item.ip,
+                //                 area:item.area,
+                //                 region_id:item.region_id,  //地区编号
+                //                 city_id:item.city_id, //城市编号
+                //                 isp:item.isp, // 网络
+                //     		}
+                //     		this.tableData.push(tableItem);
+                //         })
+                //         fun && fun();
+                //     }
+                // })
                 axios({
-                    type:'get',
-                    path:'/api/user/getUserInfo',
-                    data:data,
-                    fn:data=>{
-                        console.log(data);
-                        //成功之后的回调函数
-                        this.paginations.total = data.count;
-                        this.tableData = [];
-                    	data.data.forEach( (item,index) => {
-                    	  	const tableItem = {
-                                id:  item._id,
-                                sortnum:this.sortnum+(index+1),
-                                username:item.username,
-                                address:item.address,
-                                createTime: mutils.parseToDate(JSON.stringify(item.createTime)),
-                                updateTime: mutils.parseToDate(JSON.stringify(item.updateTime)),
-                                ip:item.ip,
-                                area:item.area,
-                                region_id:item.region_id,  //地区编号
-                                city_id:item.city_id, //城市编号
-                                isp:item.isp, // 网络
-                    		}
-                    		this.tableData.push(tableItem);
-                        })
-                        fun && fun();
-                    }
-                })
+                  type:'post',
+                  path:'http://127.0.0.1:3000/api/v2/getUserList',
+                  data:{"phone":"13788997536"},
+                  fn:data=>{
+                    console.log(data);
+                    data.forEach( (item,index) => {
+                       var date = new Date(item.createTime);
+                       var year = date.getFullYear();
+                       var month = date.getMonth()+1;    //js从0开始取 
+                       var date1 = date.getDate(); 
+                       var hour = date.getHours(); 
+                       var minutes = date.getMinutes(); 
+                       var second = date.getSeconds();
+                      const tableItem = {
+                          id:  item.id,
+                          sortnum:this.sortnum+(index+1),
+                          username:item.cName||'未实名',
+                          address:item.address,
+                          createTime: year+"/"+month+"/"+date1+" "+hour+":"+minutes +":"+second,
+                          updateTime:year+"/"+month+"/"+date1+" "+hour+":"+minutes +":"+second,
+                          money:item.money,
+                          area:item.area,
+                          region_id:item.region_id,  //地区编号
+                          city_id:item.city_id, //城市编号
+                          phone:item.phone, // 网络
+                          inviteKey:item.inviteKey,
+                          invite:item.invite,
+                          bankName:item.bankName,
+                          bankCard:item.bankCard,
+                          idCard:item.idCard,
+                          mainAddress:item.mainAddress,
+                          mainReceiver:item.mainReceiver
+                      }
+
+                      this.tableData.push(tableItem);
+                    });
+                    fun && fun();
+                  }
+                });
            },
 
             /**

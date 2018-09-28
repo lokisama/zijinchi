@@ -1,39 +1,117 @@
 <template>
     <div class="info_container">
-       
-        <!--资金信息栏-->
-        <el-row class="data_row row" :gutter="10">
-                <el-col :span="6">
-                    <div class="area">
-                    <p class="title"><i class="fa fa-cog"></i>W总资产</p>
-                    <p class="num"><span class="symbol">￥</span>180,000.00</p>
-                    <a class="detail dbgcolor">查看详情&nbsp;&nbsp;<i class="el-icon-d-arrow-right"></i></a>
+        <!--个人信息栏-->
+        <el-row class="info_row row" :gutter="10">
+                <el-col :span="4">
+                <div class="area">
+                    <div class="imgarea">
+                        <img src="../assets/img/avatar-2.jpg">
+                       <!-- <el-upload
+                            class="upload-demo"
+                            :action="uploadaction"
+                            multipl='false'
+                            accept="image/*"
+                            :limit="1"
+                            :on-exceed="handleExceed"
+                            :on-success="handSuccess"
+                            :on-error="handError"
+                            :before-upload="beforeAvatarUpload"
+                            :file-list="fileList">
+                            <el-button type="success" size="small">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+                        </el-upload> -->
+                         <el-button type="success" size="small">上传<i class="el-icon-upload el-icon--right"></i></el-button>
+                    </div>
+                </div>
+                </el-col>
+
+                <el-col :span="5">
+                <div class="area">
+                    <div class="namearea">
+                        <p>姓名：王小川</p>
+                        <p>昵称：PW68061826</p>
+                        <p>投资年限：5年</p>
+                        <p>绑定邮箱：9061446xx@qq.com</p>
+                        <p>绑定手机：189xxxx9028</p>
+                        <p class="awards"><i class="el-icon-date el-icon--left"></i>签到有奖</p>
+                    </div>
+                </div>
+                </el-col>
+
+                <el-col :span="9">
+                <div class="area">
+                    <div class="moneyarea">
+                        <p class="title">可用现金:</p>
+                        <p class="title"><span class="money">0.00</span><span class="yuan">元</span></p>
+                        </div>
+                    <div class="chongzhiarea">
+                        <img src="../assets/img/toMPic02.png"/>
+                        <p class="chongzhi">
+                            <el-button type="success" size="">我要出借</el-button>
+                            <el-button type="warning" size="">充值</el-button>
+                            <el-button type="danger" size="">提现</el-button>
+                        </p>
+                    </div>
+                    <div class="tipsarea">
+                        <p>您的每笔交易资金，都将接受银行全程存管   <a href="http://www.baidu.com" target="_blank">了解资金存管 》</a></p>
+                    </div>
                 </div>
                 </el-col>
                 <el-col :span="6">
                 <div class="area">
-                    <p class="title"><i class="fa fa-cog"></i>待收资金</p>
-                    <p class="num"><span class="symbol">￥</span>5000.00</p>
+                    <div class="dataarea">
+                        <p class="gtitle"><i class="el-icon-date el-icon--left"></i>个人数据</p>
+                        <div class="gdataarea clear">
+                            <div class="gdata left">
+                                <p class="num">20</p>
+                                <p class="title">投资数量</p>
+                            </div>
+                            <div class="gdata left">
+                                <p class="num">200</p>
+                                <p class="title">关注的人</p>
+                            </div>
+                            <div class="gdata left">
+                                <p class="num">3000</p>
+                                <p class="title">粉丝</p>
+                            </div>
+                        </div>
+                        <p class="morearea">谢谢您的关注，<a href="http://www.baidu.com" target="_blank">了解我的更多个人信息 》</a></p>
+                    </div>
+                </div>
+                </el-col>
+        </el-row>
+        <!--资金信息栏-->
+        <el-row class="data_row row" :gutter="10">
+                <el-col :span="6">
+                <div class="area">
+                    <p class="title"><i class="fa fa-cog"></i>待收资产</p>
+                    <p class="num"><span class="symbol">￥</span>78.00</p>
+                    <a class="detail dbgcolor">查看详情&nbsp;&nbsp;<i class="el-icon-d-arrow-right"></i></a>
+                </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="area">
+                    <p class="title"><i class="fa fa-cog"></i>账户总资产</p>
+                    <p class="num"><span class="symbol">￥</span>2078.00</p>
                     <a class="detail zbgcolor">查看详情&nbsp;&nbsp;<i class="el-icon-d-arrow-right"></i></a>
                 </div>
                 </el-col>
                 <el-col :span="6">
                     <div class="area">
-                    <p class="title"><i class="fa fa-cog"></i>待付资金</p>
-                    <p class="num"><span class="symbol">￥</span>3050.00</p>
+                    <p class="title"><i class="fa fa-cog"></i>已得回报</p>
+                    <p class="num"><span class="symbol">￥</span>1000.00</p>
                     <a class="detail dbgcolor">查看详情&nbsp;&nbsp;<i class="el-icon-d-arrow-right"></i></a>
                 </div>
                 </el-col>
                 <el-col :span="6">
                 <div class="area">
-                    <p class="title"><i class="fa fa-cog"></i>共赠送股份</p>
-                    <p class="num">1032 <span class="symbol">股</span></p>
+                    <p class="title"><i class="fa fa-cog"></i>期待回报</p>
+                    <p class="num"><span class="symbol">￥</span>3000.00</p>
                     <a class="detail zbgcolor">查看详情&nbsp;&nbsp;<i class="el-icon-d-arrow-right"></i></a>
                 </div>
                 </el-col>
         </el-row>
         <!--广告信息栏-->
-        <!-- <el-row class="ban_row row" :gutter="10">
+        <el-row class="ban_row row" :gutter="10">
             <el-col :span="24">
                 <div class="area">
                     <ul class="banarea">
@@ -43,7 +121,7 @@
                    </ul>
                 </div>
             </el-col>
-        </el-row> -->
+        </el-row>
 
     </div>
 </template>

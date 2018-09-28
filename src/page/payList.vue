@@ -1,122 +1,88 @@
 <template>
     <div class="fillcontain">
-        <div class="search_container">
-            <el-form 
-                :inline="true" 
-                :model='search_data' 
-                :rules="search_form_rules"
-                 ref="search_data"  
-                class="demo-form-inline search-form">
-                 <el-form-item prop='payNumber' label="支付单号:">
-                    <el-input type="text" v-model="search_data.payNumber" placeholder="请输入支付单号"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" icon="search" @click='onScreeoutMoney("search_data")'>筛选</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="danger"  icon='delete' :disabled='batch_flag'  @click='onDeletePayList()'>删除</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
         <div class="table_container">
             <el-table
-                :data="tableData"
-                v-loading="loading"
-                style="width: 100%"
-                align='center'
-                :max-height="tableHeight"
-                @selection-change='onSelectionChange'>
-            <el-table-column
-                type="selection"
-                align='center'
-                width="80">
-            </el-table-column>
-              <el-table-column
-                v-if="idFlag"
-                prop="id"
-                label="id"
-                align='center'
-                width="220">
-            </el-table-column>
-             <el-table-column
-                prop="payNumber"
-                label="支付单号"
-                align='center'
-                width="160">
-            </el-table-column>
-            <el-table-column
-                prop="orderMoney"
-                label="订单金额"
-                align='center'
-                width="120"
-                sortable>
-                <template slot-scope="scope">  
-                    <span style="color:#0066cc">{{ scope.row.orderMoney }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="incomeMoney"
-                label="收益金额"
-                align='center'
-                width="120"
-                sortable>
-                <template slot-scope="scope">  
-                    <span style="color:#00d053;">+{{ scope.row.incomeMoney }}</span>
-                </template>
-            </el-table-column>
-              <el-table-column
-                prop="payType"
-                label="支付项目"
-                align='center'
-                width="120"
-                :filters="fields.payType.filter.list"
-                :filter-method="filterType">
-                <template slot-scope="scope">
-                    <el-tag
-                        :type="payTypeTag(scope.row.payType)"
-                        close-transition>
-                        {{scope.row.payType}}
-                    </el-tag>
-              </template>
-            </el-table-column>
-             <el-table-column
-                prop="orderTime"
-                label="下单时间"
-                align='center'
-                width="210"
-                sortable>
-                <template slot-scope="scope">
-                    <el-icon name="time"></el-icon>
-                    <span style="margin-left: 10px;color:#66ccff">{{ scope.row.orderTime }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                prop="payStatus"
-                label="支付状态"
-                align='center'
-                width='120'
-                :filters="fields.payStatus.filter.list"
-                :filter-method="filterStatus"
-                filter-placement="bottom-end">
-                 <template slot-scope="scope">
-                    <el-tag
-                         :type="payStatusTag(scope.row.payStatus)"
-                         close-transition>
-                         {{scope.row.payStatus == "0" ? "支付成功":((scope.row.payStatus == "1") ? "待支付":"支付失败")}}
-                    </el-tag>
-               </template> 
-            </el-table-column>
-             <el-table-column
-                prop="remarks"
-                label="备注"
-                align='center'
-                >
-            </el-table-column>
+                 :data="tableData"
+                 border
+                 highlight-current-row
+                 style="width:100%">
+                
+                <el-table-column
+                   property="status"
+                   label="状态"
+                   width="80"
+                   align='center'>
+                   <template slot-scope="scope">  
+                    <span style="color:#67c23a;" v-if="scope.row.status == 'SUCCESS'">{{ format_status_list[scope.row.status] }}</span>
+                    <span style="background:#CC0033;color:#fff;cursor: pointer;padding: 6px 10px;border-radius: 8px;" v-else @click='onEditMoney(scope.row)'>{{ format_status_list[scope.row.status] }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                   prop="type"
+                   label="类型"
+                   width="100"
+                   align='center'>
+                   <template slot-scope="scope">  
+                    <span style="color:#CC0033">{{ format_type_list[scope.row.type] }}</span>
+                    </template>
+                </el-table-column>
+                 <el-table-column
+                   property="orderId"
+                   label="订单编号"
+                   width="310"
+                   align='center'>
+                </el-table-column>
+                <!-- <el-table-column
+                   property="address"
+                   label="注册地址"
+                   width="160"
+                   align='center'> 
+                </el-table-column>-->
+               <!-- <el-table-column
+                   property="area"
+                   label="注册区域"
+                   width="120"
+                   align='center'>
+                </el-table-column> -->
+                  <el-table-column
+                   property="phone"
+                   label="手机"
+                   width="180"
+                   align='center'>
+                </el-table-column> 
+                 <el-table-column
+                   property="cName"
+                   label="姓名"
+                   width="80"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="price"
+                   label="金额"
+                   width="80"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="orderTime"
+                   label="时间"
+                   width="180"
+                   align='center'>
+                </el-table-column>
+                <el-table-column
+                   property="remarks"
+                   label="备注"
+                   width="120"
+                   align='center'>
+                  
+                </el-table-column>
+                
+                
             </el-table>
-            <el-row>
+
+           <el-row>
                 <el-col :span="24">
                     <div class="pagination">
-                            <el-pagination
+                        <el-pagination
                             v-if='paginations.total > 0'
                             :page-sizes="paginations.page_sizes"
                             :page-size="paginations.page_size"
@@ -129,33 +95,103 @@
                     </div>
                 </el-col>
             </el-row>
+
+            <el-dialog 
+            :title="dialog.title" 
+            :visible.sync="dialog.show"
+            :close-on-click-modal='false'
+            :close-on-press-escape='false'
+            :modal-append-to-body="false">
+            <div class="form">
+                <el-form 
+                    ref="form" 
+                    :model="form"
+                    :rules="form_rules"
+                    :label-width="dialog.formLabelWidth" 
+                    style="margin:10px;width:auto;">
+
+                    <el-form-item label="状态类型:" >
+                        
+
+                        <el-select v-model="form.status" placeholder="收支类型">
+                            <el-option label="等待" value="WAIT"></el-option>
+                            <el-option label="完成" value="SUCCESS"></el-option>
+                        </el-select>
+
+                    </el-form-item>
+
+                    <el-form-item prop='type' label="收支描述:">
+                        <el-select v-model="form.type" placeholder="订单类型" disabled>
+                            <el-option label="提现" value="CASH_WITHDRAW"></el-option>
+                            <el-option label="存入" value="CASH_DEPOSIT"></el-option>
+                            <el-option label="挂单" value="ORDER_RESTING"></el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item prop='price'  label="单位(手)" v-if="form.type == 'ORDER_RESTING'">
+                        <el-input type="price" v-model.number="form.price" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item prop='price'  label="单位(元)" v-if="form.type == 'CASH_WITHDRAW' || form.type == 'CASH_DEPOSIT'">
+                        <el-input type="price" v-model.number="form.price" disabled></el-input>
+                    </el-form-item>
+
+                    <el-form-item prop='cName' label="用户:">
+                        <el-input type="cName" v-model="form.cName" disabled></el-input>
+                    </el-form-item>
+
+                    <el-form-item prop='phone' label="手机:">
+                        <el-input type="phone" v-model="form.phone" disabled></el-input>
+                    </el-form-item>
+
+                     <el-form-item label="备注:">
+                        <el-input type="textarea" v-model="form.remarks"></el-input>
+                    </el-form-item>
+
+                    <el-form-item  class="text_right">
+                        <el-button @click="dialog.show = false">取 消</el-button>
+                        <el-button type="primary" @click='onSubmit("form")'>提  交</el-button>
+                    </el-form-item>
+
+                </el-form>
+            </div>
+        </el-dialog>
+
         </div>
     </div>
 </template>
 
 <script>
-    import dtime from 'time-formater'
     import * as mutils from 'utils/mUtils'
     import {axios} from 'utils/'
 
     export default {
         data(){
+            let validateData = (rule, value, callback) => {
+                if(value === ''){
+                    let text;
+                    if(rule.field == "income"){
+                        text='收入';
+                    }else if(rule.field == "pay"){
+                        text='支出';
+                    }else{
+                        text='账户现金';
+                    }
+                    callback(new Error(text+'不能为空~'));
+                }else{
+                   let numReg = /^[0-9]+.?[0-9]*$/;
+                   if(!numReg.test(value)){
+                      callback(new Error('请输入数字值'));
+                   }else{
+                      callback();
+                   }
+                }
+            };
             return {
+                host:'http://127.0.0.1:3000',
+                admin: {"phone":"15093663999"},
+                sortnum:0,
                 tableData: [],
-                tableHeight:this.$store.state.page.win_content.height-128,   
-                idFlag:false,
-                batch_id:'', // 以","隔开的方式来保存选中的批量id
-                batch_flag: true, //符合批量删除为true,否则为false
-                loading:true,
-                search_data:{
-                    payNumber:'',
-                },
-                format_type_list: {
-                    0: '支付成功',
-                    1: '待支付',
-                    2: '支付失败'
-                },
-                //需要给分页组件传的信息
+              //需要给分页组件传的信息
                 paginations: {
                     page_index: 1,  // 当前位于哪页
                     total: 0,        // 总数
@@ -163,123 +199,137 @@
                     page_sizes: [5, 10, 15, 20],  //每页显示多少条
                     layout: "total, sizes, prev, pager, next, jumper"   // 翻页属性
                 },
-                fields: {
-                    payStatus:{
-                        filter: {
-                            list: [{
-                                text: '支付成功',
-                                value: 0
-                            },{
-                                text: '待支付',
-                                value: 1
-                            }, {
-                                text: '支付失败',
-                                value: 2
-                            }],
-                            multiple: true
-                        }
-                    },
-                    payType:{
-                        filter: {
-                            list: [{
-                                text: '债券',
-                                value: '债券'
-                            },{
-                                text: '股票',
-                                value: '股票'
-                            }, {
-                                text: '借款',
-                                value: '借款'
-                            }, {
-                                text: '保险',
-                                value: '保险'
-                            }, {
-                                text: '投标',
-                                value: '投标'
-                            }],
-                            multiple: true
-                        }
-                   }
+                format_type_list: {
+                    'CASH_WITHDRAW': '提现',
+                    'CASH_DEPOSIT': '存入',
+                    'ORDER_RESTING': '挂单',
                 },
-                search_form_rules: {
-                    payNumber   : [{
-                        required: false,
-                        message : '支付单号不能为空！',
-                        trigger : 'blur'
-                    }]
-                }
-
+                format_status_list: {
+                    'WAIT': '等待',
+                    'SUCCESS': '完成'
+                },
+                dialog: {
+                    width:'400px',
+                    show : false,
+                    title: '修改订单信息',
+                    formLabelWidth:'120px'
+                },
+                form:{
+                    incomePayType:'',
+                    incomePayDes: '',
+                    income: '',
+                    pay:'',
+                    accoutCash:'',
+                    remarks: '',
+                    status:'WAIT',
+                },
+                form_rules: {
+                     incomePayDes   : [
+                        {required: true, message : '收支描述不能为空！',trigger : 'blur'}
+                     ],
+                     income   : [
+                        { required: true, validator:validateData,trigger: 'blur'},
+                     ],
+                     pay   : [
+                        { required: true, validator:validateData,trigger: 'blur'},
+                     ],
+                     accoutCash   : [
+                          { required: true, validator:validateData,trigger: 'blur'},
+                    ],
+               }
             }
         },
-      	mounted() {
+        components: {
+
+        },
+        created(){
+            
+        },
+        mounted(){
             this.getList({
                 fun: () => {}
             });
-	   },
+        },
         methods: {
-            filterType(value,item) {
-                return item.payType = value
-            },
-            filterStatus(value, item) {
-                const type = parseInt(item.payStatus);
-                return this.format_type_list[value] == this.format_type_list[type];
-            },
-            payTypeTag(item){
-                let basic = "";
-                switch (item) {
-                  case '债券':
-                         basic = 'info';
-                         break;
-                  case '股票':
-                         basic = 'danger';
-                         break;
-                  case '借款':
-                         basic = 'warning';
-                         break;
-                  case '保险':
-                         basic = 'success';
-                         break;
-                  case '投标':
-                         basic = 'primary';
-                         break;
-                }
-                return basic;
-            },
-            payStatusTag(item){
-                let basic = "";
-                switch (item) {
-                  case '0':
-                         basic = 'success';
-                         this.tagvalue = '支付成功';
-                         break;
-                  case '1':
-                         basic = 'warning';
-                         this.tagvalue = '待成功';
-                         break;
-                  case '2':
-                         basic = 'danger';
-                         this.tagvalue = '支付失败';
-                         break;
-                }
-                return basic;
-            },
-            /**
-            * 表格列表触发CheckBox的事件
-            * @param  {array} val 当前选中的用户信息数组，每个元素是用户信息对象
-            */
-            onSelectionChange(val) {
-                if (val.length) {
-                    this.batch_flag = false;
-                    const ids = [];
-                    for (var i = 0; i < val.length; i++) {
-                        ids.push(val[i].id);
-                    }
-                    this.batch_id = ids;
-                } else {
-                    this.batch_flag = true;
-                    this.batch_id   = '';
-                }
-            },
+            getList({
+                page,
+                page_size,
+                where,
+                fun
+            } = {}){
+                var query = this.$route.query;
+                this.paginations.page_index = page || parseInt(query.page) || 1;
+                this.paginations.page_size  = page_size || parseInt(query.page_size) || this.paginations.page_size;
+                var data = {
+                    pageIndex: this.paginations.page_index,
+                    pageSize: this.paginations.page_size
+                };
+                if (where) {
+                   data = Object.assign(data, where || {});
+                } 
+                // 封装  get,path,params,fn,errfn
+                // axios({
+                //     type:'get',
+                //     path:'/api/user/getUserInfo',
+                //     data:data,
+                //     fn:data=>{
+                //         console.log(data);
+                //         //成功之后的回调函数
+                //         this.paginations.total = data.count;
+                //         this.tableData = [];
+                //      data.data.forEach( (item,index) => {
+                //          const tableItem = {
+                //                 id:  item._id,
+                //                 sortnum:this.sortnum+(index+1),
+                //                 username:item.username,
+                //                 address:item.address,
+                //                 createTime: mutils.parseToDate(JSON.stringify(item.createTime)),
+                //                 updateTime: mutils.parseToDate(JSON.stringify(item.updateTime)),
+                //                 ip:item.ip,
+                //                 area:item.area,
+                //                 region_id:item.region_id,  //地区编号
+                //                 city_id:item.city_id, //城市编号
+                //                 isp:item.isp, // 网络
+                //          }
+                //          this.tableData.push(tableItem);
+                //         })
+                //         fun && fun();
+                //     }
+                // })
+                
+                axios({
+                  type:'post',
+                  path: this.host + '/api/v2/getUserOrder',
+                  data: Object.assign({"status":"ALL"} , this.admin),
+                  fn:data=>{
+                    data.forEach( (item,index) => {
+                       var date = new Date(item.createTime);
+                       var year = date.getFullYear();
+                       var month = date.getMonth()+1;    //js从0开始取 
+                       var date1 = date.getDate(); 
+                       var hour = date.getHours(); 
+                       var minutes = date.getMinutes(); 
+                       var second = date.getSeconds();
+                      const tableItem = {
+                          id:  item.id,
+                            orderId: item.orderId,
+                            price:item.price,
+                            phone:item.phone,
+                            cName:item.cName || '未实名',
+                            orderTime:year+"/"+month+"/"+date1+" "+hour+":"+minutes +":"+second,
+                            createTime:item.createTime,
+                            status:item.status,
+                            type:item.type,
+                            remarks:item.remarks
+                      }
+
+                      this.tableData.push(tableItem);
+                    });
+                    fun && fun();
+                  }
+                });
+           },
+
             /**
             * 改变页码和当前页时需要拼装的路径方法
             * @param {string} field 参数字段名
@@ -298,61 +348,19 @@
                     query
                 });
             },
-            getList({
-                page,
-                page_size,
-                where,
-                fun
-            } = {}){
-                var query = this.$route.query;
-                this.paginations.page_index = page || parseInt(query.page) || 1;
-                this.paginations.page_size  = page_size || parseInt(query.page_size) || this.paginations.page_size;
-                var data = {
-                    pageIndex: this.paginations.page_index,
-                    pageSize: this.paginations.page_size
-                };
-                if (where) {
-				   data = Object.assign(data, where || {});
-                } 
-                // 封装  get,path,params,fn,errfn
-                console.log(data);
-                axios({
-                    type:'get',
-                    path:'/api/money/getPayList',
-                    data:data,
-                    fn:data=>{
-                        //成功之后的回调函数
-                        this.paginations.total = data.count;
-                        this.tableData = [];
-                    	data.data.forEach(item => {
-                    	  	const tableItem = {
-                                id:  item._id,
-                                payNumber:item.payNumber,
-                                orderMoney:mutils.toFixedNum(item.orderMoney),
-                                incomeMoney:mutils.toFixedNum(item.incomeMoney),
-                                payType:item.payType,
-                                orderTime:dtime(item.orderTime).format('YYYY-MM-DD HH:mm:ss'),
-                                payStatus:item.payStatus,
-                                remarks:item.remarks
-                    		}
-                    		this.tableData.push(tableItem);
-                        })
-                        this.loading = false;
-                        fun && fun();
-                    }
-                })
-           },
             // 每页多少条切换
             handleSizeChange(page_size) {
+               console.log(`每页 ${page_size} 条`);
                this.getList({
                     page_size,
                     fun: () => {
                         this.setPath('page_size', page_size);
                     }
-			   });
+               });
             },
             // 上下分页
             handleCurrentChange(page) {
+               this.sortnum = this.paginations.page_size*(page-1);
                this.getList({
                     page,
                     fun: () => {
@@ -360,85 +368,77 @@
                     }
                 });
             },
-            //订单筛选
-            onScreeoutMoney(search_data){
-                this.$refs[search_data].validate((valid) => {
-                    if (valid) { //表单数据验证完成之后，提交数据;
-                        let formData = this[search_data];
-                        axios({
-                            type:'get',
-                            path:'/api/money/screeoutPayList',
-                            data:formData,
-                            fn:data=>{
-                                this.$message({message:'筛选成功',type: 'success'}),
-                                this.loading = false;
-                                this.paginations.total = data.count;
-                                this.tableData = [];
-                                data.data.forEach(item => {
-                                    const tableItem = {
-                                        id:  item._id,
-                                        payNumber:item.payNumber,
-                                        orderMoney:mutils.toFixedNum(item.orderMoney),
-                                        incomeMoney:mutils.toFixedNum(item.incomeMoney),
-                                        payType:item.payType,
-                                        orderTime:dtime(item.orderTime).format('YYYY-MM-DD HH:mm:ss'),
-                                        payStatus:item.payStatus,
-                                        remarks:item.remarks
-                                    }
-                                    this.tableData.push(tableItem);
-                                })
-                            },
-                            errFn:()=>{
-                                this.$message.error('编辑失败请重试')
-                            }
-                        })
+
+            // 操作方法
+            onEditMoney(row){
+                this.editid = row.id;
+                this.form = Object.assign({},row);
+                
+               
+                this.dialog.title = '修改订单信息 [ '+row.orderId + ' ]';
+                this.dialog.show  = true;
+            },
+
+            //表单提交
+            onSubmit(form){
+                this.$refs[form].validate((valid) => {
+                    if (valid) {//表单数据验证完成之后，提交数据;
+                        let formData = this[form];
+                        let data = {};
+                        
+                        for(var i in formData){
+                            data.id = this.editid;
+                            data.cName = formData['cName'];
+                            data.phone = formData['phone'];
+                            data.orderId = formData['orderId'];
+                            data.orderTime = formData['orderTime'];
+                            data.price = formData['price'];
+                            data.status = formData['status'];
+                            data.type = formData['type'];
+                        }
+                        console.log(data);
+                        if(this.editid != ""){
+                            this.editOrder(data)
+                        }else{
+                            this.addOrder(data)
+                        }
+                       
                     }
                 })
             },
-            onDeletePayList(){
-                this.$message({
-                    showClose: true,
-                    message: '对不起，您暂无此操作权限~',
-                    type: 'success'
-                });
-                return;
-                let ids = this.batch_id;
-                let reqData = {
-                    'ids':ids
-                }
+            editOrder(data){
                 axios({
-                    type:'get',
-                    path:'/api/money/batchDeletePayList',
-                    data:reqData,
+                    type:'post',
+                    path:this.host + '/api/v2/setOrderSuccess',
+                    data: Object.assign( {"orderId":data.id}, this.admin),
                     fn:data=>{
-                        //得到筛选之后的值，进行重新加载表格数据;
-                        this.$message({message:'删除成功',type: 'success'}),
+                        this.$message('编辑成功'),
                         this.paginations.total = data.count;
-                        this.getList({fun: () => {} }); // 删除成功后，重新加载数据;                
+                        this.getList({fun: () => {} }); 
+                        this.dialog.show = false;
                     },
                     errFn:()=>{
-                        this.$message.error('删除失败请重试')
+                        this.$message.error('编辑失败请重试')
                     }
                 })
-            }        
-        }
+            },
+            addOrder(data){
+                axios({
+                    type:'post',
+                    path:this.host + '/api/v2/setOrderSuccess',
+                    data:Object.assign({"orderId":data.id}, this.admin),
+                    fn:data=>{
+                        this.$message('编辑成功'),
+                        this.paginations.total = data.count;
+                        this.getList({fun: () => {} }); 
+                        this.dialog.show = false;
+                    },
+                    errFn:()=>{
+                        this.$message.error('编辑失败请重试')
+                    }
+                })
+            }
+           
+        },
     }
 </script>
-
-<style lang="less" scoped>
-     .search_container{
-        height: 36px;
-        line-height: 36px;
-        margin-bottom:10px;
-    }
-    .search-form{
-        width:100%;
-        min-width:750px;
-    }
-    .pagination{
-        text-align: left;
-        margin-top: 10px;
-    }
-</style>
-
-

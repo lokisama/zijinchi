@@ -3,7 +3,7 @@
         <el-row style="margin:0 10px;">
             <el-col :span="6" class='logo-container'>
                 <img src="../assets/img/logo.png" class='logo' alt="">
-                <span class='title'>xxx金融后台管理系统</span>
+                <span class='title'>W资产后台管理系统</span>
             </el-col>
             <div class="userinfo">
                 <img src="../assets/img/avatar.png" class='avatar' alt="">
@@ -29,7 +29,7 @@
             </div>
               <div class="notify-row">
                 <ul class="top-menu">
-                    <li class="li-badge">
+                    <!-- <li class="li-badge">
                         <a href='#/index'>
                             <el-badge :value="6" class="item one">
                                 <i class="fa fa-tasks"></i>
@@ -49,7 +49,7 @@
                                 <i class="fa fa-bell-o"></i>
                             </el-badge>
                         </a>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
         </el-row>

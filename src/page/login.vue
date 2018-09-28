@@ -3,7 +3,7 @@
 	  	<transition name="form-fade" mode="in-out">
 	  		<section class="form_contianer" v-show="showLogin">
 		  		<div class="manage_tip">
-		  			<span class="title">xxx金融后台管理系统</span>
+		  			<span class="title">W资产后台管理系统</span>
 		  		</div>
 		    	<el-form :model="loginForm" :rules="rules" ref="loginForm" class="loginForm">
 					<el-form-item prop="username">
@@ -17,11 +17,11 @@
 					<el-form-item>
 				    	<el-button type="primary"  @click="submitForm('loginForm')" class="submit_btn">登陆</el-button>
 				  	</el-form-item>
-					<div class="tiparea">
+					<!-- <div class="tiparea">
 						<p class="wxtip">温馨提示：</p>
 						<p class="tip">未登录过的新用户，自动注册</p>
 						<p class="tip">注册过的用户可凭账号密码登录</p>
-					</div>
+					</div> -->
 				</el-form>
 			
 	  		</section>
@@ -80,53 +80,63 @@
 			//模拟动态生成菜单并定位到index
 			generateMenuPushIndex(){
 				const menuData = [
-					{path:'/index',name:'首页',component:'index',icon:'fa-server',noDropdown:true,
+					{path:'/infoShow',name:'首页',component:'infoShow',icon:'fa-server',noDropdown:true,
 						children:[
-							{path:'/index',name:'首页',component:'index'},
+							{path:'/infoShow',name:'首页',component:'infoShow'},
 						]
 					},
-					{path:'/userList',name:'用户列表',component:'userList',icon:'fa-user',noDropdown:true,
+					{path:'/userList',name:'用户管理',component:'userList',icon:'fa-user',noDropdown:true,
 						children:[
 							{path:'/userList',name:'用户列表',component:'userList'},
 						]
 					},
-					{path:'/infoList',name:'信息列表',component:'infoList',icon:'fa-envelope',noDropdown:true,
+					{path:'/fundList',name:'资金管理',component:'fundList',icon:'fa-envelope',noDropdown:true,
 						children:[
-							{path:'/infoList',name:'信息列表',component:'infoList'},
+							{path:'/fundList',name:'资列表',component:'fundList'},
 						]
 					},
-					{path:'/infoManage',name:'信息管理',component:'content',icon:'fa-asterisk',
+					{path:'/payList',name:'订单管理',component:'payList',icon:'fa-money',noDropdown:true,
 						children:[
-							{path:'/infoShow',name:'个人信息',component:'infoShow'},
-							{path:'/infoModify',name:'修改信息',component:'infoModify'}
+							{path:'/payList',name:'订单列表',component:'payList'},
 						]
 					},
-					{path:'/fundManage',name:'资金管理',component:'content',icon:'fa-money',
+					{path:'/infoShow',name:'报表管理',component:'infoShow',icon:'fa-asterisk',noDropdown:true,
 						children:[
-							{path:'/fundList',name:'资金流水',component:'fundList'},
-							{path:'/payList',name:'支付单据',component:'payList'}
+							{path:'/infoShow',name:'报表列表',component:'infoShow'},
 						]
-			        },
-					{path:'/touziManage',name:'投资管理',component:'content',icon:'fa-inbox',
-						children:[
-							{path:'/chinaTouziList',name:'省份投资',component:'chinaTouziList'},
-							{path:'/chinaTabsList',name:'区域投资',component:'chinaTabsList'}
-						]
-			        },
-					{path:'/fundArticle',name:'金融文章',component:'content',icon:'fa-file-text-o',
-						children:[
-							{path:'/createFundArticle',name:'发布文章',component:'createFundArticle'},
-							{path:'/modifyFundArticle',name:'编辑文章',component:'modifyFundArticle'},
-							{path:'/showFundArticle',name:'查看文章',component:'showFundArticle'}
-						]
-			        },
-					{path:'/fundData',name:'资金数据',component:'content',icon:'fa-bar-chart-o',
-						children:[
-							{path:'/fundPosition',name:'投资分布',component:'fundPosition'},
-							{path:'/typePosition',name:'项目分布',component:'typePosition'},
-							{path:'/incomePayPosition',name:'收支统计',component:'incomePayPosition'}
-						]
-			        },
+					},
+					// {path:'/infoManage',name:'信息管理',component:'content',icon:'fa-asterisk',
+					// 	children:[
+					// 		{path:'/infoShow',name:'个人信息',component:'infoShow'},
+					// 		{path:'/infoModify',name:'修改信息',component:'infoModify'}
+					// 	]
+					// },
+					// {path:'/fundManage',name:'资金管理',component:'content',icon:'fa-money',
+					// 	children:[
+					// 		{path:'/fundList',name:'资金流水',component:'fundList'},
+					// 		{path:'/payList',name:'支付单据',component:'payList'}
+					// 	]
+			  //       },
+					// {path:'/touziManage',name:'投资管理',component:'content',icon:'fa-inbox',
+					// 	children:[
+					// 		{path:'/chinaTouziList',name:'省份投资',component:'chinaTouziList'},
+					// 		{path:'/chinaTabsList',name:'区域投资',component:'chinaTabsList'}
+					// 	]
+			  //       },
+					// {path:'/fundArticle',name:'金融文章',component:'content',icon:'fa-file-text-o',
+					// 	children:[
+					// 		{path:'/createFundArticle',name:'发布文章',component:'createFundArticle'},
+					// 		{path:'/modifyFundArticle',name:'编辑文章',component:'modifyFundArticle'},
+					// 		{path:'/showFundArticle',name:'查看文章',component:'showFundArticle'}
+					// 	]
+			  //       },
+					// {path:'/fundData',name:'资金数据',component:'content',icon:'fa-bar-chart-o',
+					// 	children:[
+					// 		{path:'/fundPosition',name:'投资分布',component:'fundPosition'},
+					// 		{path:'/typePosition',name:'项目分布',component:'typePosition'},
+					// 		{path:'/incomePayPosition',name:'收支统计',component:'incomePayPosition'}
+					// 	]
+			  //       },
 				
 				]
 
@@ -157,7 +167,7 @@
 					this.loadRoutes()   // true,第二次进来不用再去加载路由
 				}  
 
-				this.$router.push('/index')
+				this.$router.push('/infoShow')
 				this.showMessage('success','登录成功');
 			},
 		    submitForm(loginForm) {
@@ -231,7 +241,7 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		background: url(../assets/img/bg9.jpg) no-repeat center center;
+		background: url(../assets/img/bg.png) no-repeat center center;
 		background-size: 100% 100%;
 	}
 	.loginForm{
